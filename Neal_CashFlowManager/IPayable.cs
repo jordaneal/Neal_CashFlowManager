@@ -8,6 +8,7 @@
             Hourly,
             Invoice
         }
+        LedgerType GetLedgerType();
         decimal GetPayableAmount();
     }
 }

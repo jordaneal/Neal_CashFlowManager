@@ -33,6 +33,10 @@ namespace Neal_CashFlowManager
                 return HoursWorked * HourlyWage;
             }
         }
+        public override IPayable.LedgerType GetLedgerType()
+        {
+            return IPayable.LedgerType.Hourly;
+        }
         public override string ToString()
         {
             return

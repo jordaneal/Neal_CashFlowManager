@@ -18,6 +18,10 @@ namespace Neal_CashFlowManager
         {
             return WeeklySalary;
         }
+        public override IPayable.LedgerType GetLedgerType()
+        {
+            return IPayable.LedgerType.Salaried;
+        }
         public override string ToString()
         {
             return

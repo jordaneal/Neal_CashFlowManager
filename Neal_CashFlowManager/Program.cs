@@ -13,15 +13,15 @@ namespace Neal_CashFlowManager
         {
             IPayable[] payables = new IPayable[20];
             payables[0] = new Invoice("0119", "Tesla Roadster", 1, 200000M);
-            payables[1] = new Invoice("5192", "Hyperwave Emissions Enhancement Filter", 603, 64999.99M);
-            payables[2] = new Invoice("9233", "Null Quantum Field Generator", 7, 0.01M);
+            payables[1] = new Invoice("5192", "Hyperwave Emissions Enhancement Filter", 13, 649.99M);
+            payables[2] = new Invoice("9233", "Null Quantum Field Generator", 50000, 0.01M);
             payables[3] = new HourlyEmployee("Eric", "Cartman", 532502919, 19.92M, 28);
             payables[4] = new HourlyEmployee("Stan", "Marsh", 536092327, 21.23M, 46);
             payables[5] = new HourlyEmployee("Kyle", "Broflovski", 514358637, 18.05M, 42);
             payables[6] = new SalariedEmployee("Anakin", "Skywalker", 514358637, 780.60M);
             payables[7] = new SalariedEmployee("Obi-Wan", "Kenobi", 514358637, 1120.19M);
             payables[8] = new SalariedEmployee("Han", "Solo", 514358637, 975.50M);
-
+            
             int arrayLocation = 9;
             string choice;
             do
@@ -34,7 +34,7 @@ namespace Neal_CashFlowManager
                     "\n4: Print Report and Close Program" +
                     "\nSelection: ");
                 choice = Console.ReadLine();
-                
+
                 if (choice == "1")
                 {
                     Console.Write("\nPart Number: ");
@@ -69,7 +69,7 @@ namespace Neal_CashFlowManager
                 }
                 else if (choice == "3")
                 {
-                    Console.Write("First Name: ");
+                    Console.Write("\nFirst Name: ");
                     string firstName = Console.ReadLine();
                     Console.Write("Last Name: ");
                     string lastName = Console.ReadLine();
@@ -83,20 +83,39 @@ namespace Neal_CashFlowManager
                 }
                 else if (choice == "4")
                 {
+                    decimal totalPayout = 0;
+                    decimal invoiceTotal = 0;
+                    decimal salariedTotal = 0;
+                    decimal hourlyTotal = 0;
+
                     Console.Clear();
                     Console.WriteLine("Weekly Cash Flow Analysis is as follows:");
 
                     for (int i = 0; payables[i] != null; i++)
                     {
                         Console.WriteLine("\n" + payables[i].ToString());
+                        totalPayout += payables[i].GetPayableAmount();
+                        if (payables[i].GetLedgerType() == IPayable.LedgerType.Invoice)
+                        {
+                            invoiceTotal += payables[i].GetPayableAmount();
+                        }
+                        else if (payables[i].GetLedgerType() == IPayable.LedgerType.Salaried)
+                        {
+                            salariedTotal += payables[i].GetPayableAmount();
+                        }
+                        else if (payables[i].GetLedgerType() == IPayable.LedgerType.Hourly)
+                        {
+                            hourlyTotal += payables[i].GetPayableAmount();
+                        }
                     }
-
-                    Console.WriteLine(
-                        $"Total Weekly Payout: " +
+                    Console.Write(
+                        $"\nTotal Weekly Payout: {totalPayout.ToString("C")}" +
                         $"\nCategory Breakdown:" +
-                        $"\n\tInvoices: " +
-                        $"\n\tSalaried Payroll: " +
-                        $"\n\tHourly Payroll: ");
+                        $"\n\tInvoices: {invoiceTotal.ToString("C")}" +
+                        $"\n\tSalaried Payroll: {salariedTotal.ToString("C")}" +
+                        $"\n\tHourly Payroll: {hourlyTotal.ToString("C")}" +
+                        $"\n\nPress any key to close application...");
+                    Console.ReadKey();
                 }
             } while (choice != "4");
         }

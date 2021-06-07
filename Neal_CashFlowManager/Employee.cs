@@ -25,7 +25,11 @@
         }
         public virtual decimal Earnings()
         {
-            return -1;
+            throw new System.NotImplementedException();
+        }
+        public virtual IPayable.LedgerType GetLedgerType()
+        {
+            throw new System.NotImplementedException();
         }
         public decimal GetPayableAmount()
         {

@@ -48,6 +48,10 @@ namespace Neal_CashFlowManager
         {
             return Quantity * Price;
         }
+        public IPayable.LedgerType GetLedgerType()
+        {
+            return IPayable.LedgerType.Invoice;
+        }
         public override string ToString()
         {
             return
