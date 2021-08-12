@@ -1,6 +1,6 @@
 ﻿namespace Neal_CashFlowManager
 {
-    class Employee: IPayable
+    abstract class Employee: IPayable
     {
         private string _firstName;
         private string _lastName;
@@ -23,14 +23,8 @@
         {
             get { return _SSN; }
         }
-        public virtual decimal Earnings()
-        {
-            throw new System.NotImplementedException();
-        }
-        public virtual IPayable.LedgerType GetLedgerType()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract decimal Earnings();
+        public abstract IPayable.LedgerType GetLedgerType();
         public decimal GetPayableAmount()
         {
             return Earnings();
