@@ -6,7 +6,7 @@ namespace Neal_CashFlowManager
     {
         private decimal _hourlyWage;
         private int _hoursWorked;
-        public HourlyEmployee(string firstName, string lastName, int SSN, 
+        public HourlyEmployee(string firstName, string lastName, string SSN,
             decimal hourlyWage, int hoursWorked) : base(firstName, lastName, SSN)
         {
             _hourlyWage = hourlyWage;
@@ -41,7 +41,7 @@ namespace Neal_CashFlowManager
         {
             return
                 $"Hourly Employee: {FirstName} {LastName}" +
-                $"\nSSN: {String.Format("{0:###-##-####}", SSN)}" +
+                $"\nSSN: {FormattedSSN}" +
                 $"\nHourly Wage Salary: {HourlyWage.ToString("C")}" +
                 $"\nHours Worked: {HoursWorked}" +
                 $"\nEarned: {Earnings().ToString("C")}";

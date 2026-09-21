@@ -9,7 +9,7 @@ namespace Neal_CashFlowManager
         {
             get { return _weeklySalary; }
         }
-        public SalariedEmployee(string firstName, string lastName, int SSN, 
+        public SalariedEmployee(string firstName, string lastName, string SSN,
             decimal weeklySalary) : base(firstName, lastName, SSN)
         {
             _weeklySalary = weeklySalary;
@@ -26,7 +26,7 @@ namespace Neal_CashFlowManager
         {
             return
                 $"Salaried Employee: {FirstName} {LastName}" +
-                $"\nSSN: {String.Format("{0:###-##-####}", SSN)}" +
+                $"\nSSN: {FormattedSSN}" +
                 $"\nWeekly Salary: {WeeklySalary.ToString("C")}" +
                 $"\nEarned: {WeeklySalary.ToString("C")}";
         }

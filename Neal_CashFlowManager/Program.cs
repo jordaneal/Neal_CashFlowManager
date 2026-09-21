@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 // Jordan Neal
 // IT112
@@ -32,6 +33,19 @@ namespace Neal_CashFlowManager
             return value;
         }
 
+        static string ReadSsn(string prompt)
+        {
+            string value;
+            Console.Write(prompt);
+            value = Console.ReadLine();
+            while (value == null || value.Length != 9 || !value.All(char.IsDigit))
+            {
+                Console.Write("SSN must be exactly 9 digits, please try again.\n" + prompt);
+                value = Console.ReadLine();
+            }
+            return value;
+        }
+
         static void Main(string[] args)
         {
             List<IPayable> payables = new List<IPayable>
@@ -39,12 +53,12 @@ namespace Neal_CashFlowManager
                 new Invoice("0119", "Tesla Roadster", 1, 200000M),
                 new Invoice("5192", "Hyperwave Emissions Enhancement Filter", 13, 649.99M),
                 new Invoice("9233", "Null Quantum Field Generator", 50000, 0.01M),
-                new HourlyEmployee("Eric", "Cartman", 532502919, 19.92M, 28),
-                new HourlyEmployee("Stan", "Marsh", 536092327, 21.23M, 46),
-                new HourlyEmployee("Kyle", "Broflovski", 514358637, 18.05M, 42),
-                new SalariedEmployee("Anakin", "Skywalker", 514358637, 780.60M),
-                new SalariedEmployee("Obi-Wan", "Kenobi", 514358637, 1120.19M),
-                new SalariedEmployee("Han", "Solo", 514358637, 975.50M)
+                new HourlyEmployee("Eric", "Cartman", "532502919", 19.92M, 28),
+                new HourlyEmployee("Stan", "Marsh", "536092327", 21.23M, 46),
+                new HourlyEmployee("Kyle", "Broflovski", "514358637", 18.05M, 42),
+                new SalariedEmployee("Anakin", "Skywalker", "514358637", 780.60M),
+                new SalariedEmployee("Obi-Wan", "Kenobi", "514358637", 1120.19M),
+                new SalariedEmployee("Han", "Solo", "514358637", 975.50M)
             };
 
             string choice;
@@ -76,7 +90,7 @@ namespace Neal_CashFlowManager
                     string firstName = Console.ReadLine();
                     Console.Write("Last Name: ");
                     string lastName = Console.ReadLine();
-                    int SSN = ReadInt("SSN: ");
+                    string SSN = ReadSsn("SSN: ");
                     decimal hourlyWage = ReadDecimal("Hourly Wage: ");
                     int hoursWorked = ReadInt("Hours Worked: ");
 
@@ -88,7 +102,7 @@ namespace Neal_CashFlowManager
                     string firstName = Console.ReadLine();
                     Console.Write("Last Name: ");
                     string lastName = Console.ReadLine();
-                    int SSN = ReadInt("SSN: ");
+                    string SSN = ReadSsn("SSN: ");
                     decimal weeklySalary = ReadDecimal("Weekly Salary: ");
 
                     payables.Add(new SalariedEmployee(firstName, lastName, SSN, weeklySalary));

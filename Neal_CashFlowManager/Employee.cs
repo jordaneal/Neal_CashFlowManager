@@ -4,8 +4,8 @@
     {
         private string _firstName;
         private string _lastName;
-        private int _SSN;
-        public Employee(string firstName, string lastName, int SSN)
+        private string _SSN;
+        public Employee(string firstName, string lastName, string SSN)
         {
             _firstName = firstName;
             _lastName = lastName;
@@ -19,9 +19,18 @@
         {
             get { return _lastName; }
         }
-        public int SSN
+        public string SSN
         {
             get { return _SSN; }
+        }
+        protected string FormattedSSN
+        {
+            get
+            {
+                return _SSN.Length == 9
+                    ? $"{_SSN.Substring(0, 3)}-{_SSN.Substring(3, 2)}-{_SSN.Substring(5, 4)}"
+                    : _SSN;
+            }
         }
         public abstract decimal Earnings();
         public abstract IPayable.LedgerType GetLedgerType();
