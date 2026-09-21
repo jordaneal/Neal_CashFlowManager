@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 // Jordan Neal
-// IT112 
+// IT112
 // NOTES: Having the UML diagram was a huge help for sure.
 // BEHAVIORS NOT IMPLEMENTED AND WHY: N/A
 
@@ -9,20 +10,43 @@ namespace Neal_CashFlowManager
 {
     class Program
     {
+        static int ReadInt(string prompt)
+        {
+            int value;
+            Console.Write(prompt);
+            while (!int.TryParse(Console.ReadLine(), out value))
+            {
+                Console.Write("Invalid number, please try again.\n" + prompt);
+            }
+            return value;
+        }
+
+        static decimal ReadDecimal(string prompt)
+        {
+            decimal value;
+            Console.Write(prompt);
+            while (!decimal.TryParse(Console.ReadLine(), out value))
+            {
+                Console.Write("Invalid number, please try again.\n" + prompt);
+            }
+            return value;
+        }
+
         static void Main(string[] args)
         {
-            IPayable[] payables = new IPayable[20];
-            payables[0] = new Invoice("0119", "Tesla Roadster", 1, 200000M);
-            payables[1] = new Invoice("5192", "Hyperwave Emissions Enhancement Filter", 13, 649.99M);
-            payables[2] = new Invoice("9233", "Null Quantum Field Generator", 50000, 0.01M);
-            payables[3] = new HourlyEmployee("Eric", "Cartman", 532502919, 19.92M, 28);
-            payables[4] = new HourlyEmployee("Stan", "Marsh", 536092327, 21.23M, 46);
-            payables[5] = new HourlyEmployee("Kyle", "Broflovski", 514358637, 18.05M, 42);
-            payables[6] = new SalariedEmployee("Anakin", "Skywalker", 514358637, 780.60M);
-            payables[7] = new SalariedEmployee("Obi-Wan", "Kenobi", 514358637, 1120.19M);
-            payables[8] = new SalariedEmployee("Han", "Solo", 514358637, 975.50M);
-            
-            int arrayLocation = 9;
+            List<IPayable> payables = new List<IPayable>
+            {
+                new Invoice("0119", "Tesla Roadster", 1, 200000M),
+                new Invoice("5192", "Hyperwave Emissions Enhancement Filter", 13, 649.99M),
+                new Invoice("9233", "Null Quantum Field Generator", 50000, 0.01M),
+                new HourlyEmployee("Eric", "Cartman", 532502919, 19.92M, 28),
+                new HourlyEmployee("Stan", "Marsh", 536092327, 21.23M, 46),
+                new HourlyEmployee("Kyle", "Broflovski", 514358637, 18.05M, 42),
+                new SalariedEmployee("Anakin", "Skywalker", 514358637, 780.60M),
+                new SalariedEmployee("Obi-Wan", "Kenobi", 514358637, 1120.19M),
+                new SalariedEmployee("Han", "Solo", 514358637, 975.50M)
+            };
+
             string choice;
             do
             {
@@ -41,14 +65,10 @@ namespace Neal_CashFlowManager
                     string partNumber = Console.ReadLine();
                     Console.Write("Part Description: ");
                     string partDescription = Console.ReadLine();
-                    Console.Write("Quantity: ");
-                    int quantity = int.Parse(Console.ReadLine());
-                    Console.Write("Price: ");
-                    decimal price = decimal.Parse(Console.ReadLine());
+                    int quantity = ReadInt("Quantity: ");
+                    decimal price = ReadDecimal("Price: ");
 
-                    payables[arrayLocation] = new Invoice(
-                        partNumber, partDescription, quantity, price);
-                    arrayLocation++;
+                    payables.Add(new Invoice(partNumber, partDescription, quantity, price));
                 }
                 else if (choice == "2")
                 {
@@ -56,16 +76,11 @@ namespace Neal_CashFlowManager
                     string firstName = Console.ReadLine();
                     Console.Write("Last Name: ");
                     string lastName = Console.ReadLine();
-                    Console.Write("SSN: ");
-                    int SSN = int.Parse(Console.ReadLine());
-                    Console.Write("Hourly Wage: ");
-                    decimal hourlyWage = decimal.Parse(Console.ReadLine());
-                    Console.Write("Hours Worked: ");
-                    int hoursWorked = int.Parse(Console.ReadLine());
+                    int SSN = ReadInt("SSN: ");
+                    decimal hourlyWage = ReadDecimal("Hourly Wage: ");
+                    int hoursWorked = ReadInt("Hours Worked: ");
 
-                    payables[arrayLocation] = new HourlyEmployee(
-                        firstName, lastName, SSN, hourlyWage, hoursWorked);
-                    arrayLocation++;
+                    payables.Add(new HourlyEmployee(firstName, lastName, SSN, hourlyWage, hoursWorked));
                 }
                 else if (choice == "3")
                 {
@@ -73,13 +88,10 @@ namespace Neal_CashFlowManager
                     string firstName = Console.ReadLine();
                     Console.Write("Last Name: ");
                     string lastName = Console.ReadLine();
-                    Console.Write("SSN: ");
-                    int SSN = int.Parse(Console.ReadLine());
-                    Console.Write("Weekly Salary: ");
-                    decimal weeklySalary = decimal.Parse(Console.ReadLine());
+                    int SSN = ReadInt("SSN: ");
+                    decimal weeklySalary = ReadDecimal("Weekly Salary: ");
 
-                    payables[arrayLocation] = new SalariedEmployee(firstName, lastName, SSN, weeklySalary);
-                    arrayLocation++;
+                    payables.Add(new SalariedEmployee(firstName, lastName, SSN, weeklySalary));
                 }
                 else if (choice == "4")
                 {
@@ -91,21 +103,22 @@ namespace Neal_CashFlowManager
                     Console.Clear();
                     Console.WriteLine("Weekly Cash Flow Analysis is as follows:");
 
-                    for (int i = 0; payables[i] != null; i++)
+                    foreach (IPayable payable in payables)
                     {
-                        Console.WriteLine("\n" + payables[i].ToString());
-                        totalPayout += payables[i].GetPayableAmount();
-                        if (payables[i].GetLedgerType() == IPayable.LedgerType.Invoice)
+                        Console.WriteLine("\n" + payable.ToString());
+                        decimal amount = payable.GetPayableAmount();
+                        totalPayout += amount;
+                        switch (payable.GetLedgerType())
                         {
-                            invoiceTotal += payables[i].GetPayableAmount();
-                        }
-                        else if (payables[i].GetLedgerType() == IPayable.LedgerType.Salaried)
-                        {
-                            salariedTotal += payables[i].GetPayableAmount();
-                        }
-                        else if (payables[i].GetLedgerType() == IPayable.LedgerType.Hourly)
-                        {
-                            hourlyTotal += payables[i].GetPayableAmount();
+                            case IPayable.LedgerType.Invoice:
+                                invoiceTotal += amount;
+                                break;
+                            case IPayable.LedgerType.Salaried:
+                                salariedTotal += amount;
+                                break;
+                            case IPayable.LedgerType.Hourly:
+                                hourlyTotal += amount;
+                                break;
                         }
                     }
                     Console.Write(
